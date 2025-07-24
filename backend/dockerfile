@@ -1,0 +1,20 @@
+# Imagen base de Python
+FROM python:3.13-slim
+
+# Establece el directorio de trabajo en el contenedor
+WORKDIR /app
+
+# Copia el archivo de requerimientos
+COPY ./backend/requirements.txt /app/requirements.txt
+
+# Instala las dependencias del proyecto
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Copia el resto de los archivos del proyecto al contenedor
+COPY ./backend /app/
+
+# Exponer el puerto en el que Django correrá
+EXPOSE 8000
+
+# Comando por defecto para ejecutar el servidor de desarrollo de Django
+CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]

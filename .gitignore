@@ -1,0 +1,9 @@
+# Ignorar el entorno virtual
+env/
+
+# Ignorar archivos de configuración de IDE
+*.vscode/
+# Ignorar archivos de configuración de Django
+*.pyc
+__pycache__/
+.DS_Store
