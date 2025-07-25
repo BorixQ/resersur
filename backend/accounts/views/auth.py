@@ -9,7 +9,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from django.contrib.auth.tokens import default_token_generator
 
-from accounts.serializers import UserCreateSerializer, EmailVerificationSerializer
+from accounts.serializers import UserCreateSerializer, EmailVerificationSerializer, ForgotPasswordSerializer, ResetPasswordSerializer
 
 
 class RegisterAPIView(APIView):
@@ -80,4 +80,28 @@ class VerifyEmailAPIView(APIView):
         if serializer.is_valid():
             serializer.save()
             return Response({"message": "Correo verificado exitosamente."}, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ForgotPasswordAPIView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = ForgotPasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            data = serializer.save()
+            return Response({
+                "message": "Token generado correctamente.",
+                "uid": data['uid'],
+                "token": data['token']
+            }, status=status.HTTP_200_OK)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+class ResetPasswordAPIView(APIView):
+    permission_classes = [permissions.AllowAny]
+
+    def post(self, request):
+        serializer = ResetPasswordSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response({"message": "Contraseña actualizada correctamente."}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
