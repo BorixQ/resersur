@@ -2,6 +2,10 @@ from rest_framework import serializers
 from django.contrib.auth import get_user_model
 from django.contrib.auth.password_validation import validate_password
 
+from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_str
+from django.contrib.auth.tokens import default_token_generator
+
 User = get_user_model()
 
 class CustomUserSerializer(serializers.ModelSerializer):
@@ -47,8 +51,32 @@ class UserCreateSerializer(serializers.ModelSerializer):
 
         user = User.objects.create(
             username=username,
+            is_active=False,
             **validated_data
         )
         user.set_password(password)
+        user.save()
+        return user
+
+class EmailVerificationSerializer(serializers.Serializer):
+    uid = serializers.CharField()
+    token = serializers.CharField()
+
+    def validate(self, data):
+        try:
+            uid = force_str(urlsafe_base64_decode(data['uid']))
+            user = get_user_model().objects.get(pk=uid)
+        except Exception:
+            raise serializers.ValidationError("UID inválido.")
+
+        if not default_token_generator.check_token(user, data['token']):
+            raise serializers.ValidationError("Token inválido o expirado.")
+
+        data['user'] = user
+        return data
+
+    def save(self):
+        user = self.validated_data['user']
+        user.is_active = True
         user.save()
         return user

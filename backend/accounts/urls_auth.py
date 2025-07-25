@@ -3,7 +3,9 @@ from django.urls import path
 from accounts.views.auth import (
     RegisterAPIView,
     EmailTokenObtainPairView,
-    LogoutAPIView
+    LogoutAPIView,
+    TokenRefreshView,
+    VerifyEmailAPIView,
 )
 
 from rest_framework_simplejwt.views import TokenRefreshView
@@ -13,4 +15,7 @@ urlpatterns = [
     path('login/', EmailTokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('logout/', LogoutAPIView.as_view(), name='logout'),
+    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('verify-email/', VerifyEmailAPIView.as_view(), name='verify-email'),
+
 ]
