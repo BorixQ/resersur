@@ -19,8 +19,9 @@ RUN pip install --no-cache-dir -r /app/requirements.txt
 # Copia el resto de los archivos del proyecto al contenedor
 COPY ./backend /app/
 
-# Exponer el puerto en el que Django correrá
-EXPOSE 8000
+# Copia el script wait-for-it y le da permisos de ejecución
+COPY ./backend/wait-for-it.sh /app/wait-for-it.sh
+RUN chmod +x /app/wait-for-it.sh
 
-# Comando por defecto para ejecutar el servidor de desarrollo de Django
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Expone el puerto de Django
+EXPOSE 8000
