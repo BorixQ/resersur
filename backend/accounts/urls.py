@@ -5,4 +5,6 @@ from accounts.views.auth import RegisterAPIView, EmailTokenObtainPairView, Logou
 
 urlpatterns = [
     path('auth/', include('accounts.urls_auth')),  # Ahora es /api/accounts/auth/
+    path('users/', include('accounts.urls_users')),  # Ahora es /api/accounts/users/
+    path('', include('accounts.urls_profile')),
 ]

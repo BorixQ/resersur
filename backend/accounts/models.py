@@ -1,4 +1,6 @@
+# accounts/models.py
 from django.contrib.auth.models import AbstractUser
+from .managers import CustomUserManager
 from django.db import models
 
 # Definir los roles de usuario como un choice field
@@ -29,6 +31,8 @@ class CustomUser(AbstractUser):
     # Cambiar el campo username por email
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['first_name', 'last_name']  # Ya no es necesario 'username'
+
+    objects = CustomUserManager()  # <- Aquí el cambio
 
     def __str__(self):
         return self.email

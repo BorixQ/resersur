@@ -1,3 +1,4 @@
+# accounts/views/auth.py
 from rest_framework import status, permissions, serializers
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -51,9 +52,14 @@ class EmailTokenObtainPairSerializer(TokenObtainPairSerializer):
             self.fields.pop('username')
 
     def validate(self, attrs):
-        # Hacer que el campo 'email' actúe como 'username' internamente
         attrs['username'] = attrs.get('email')
-        return super().validate(attrs)
+        data = super().validate(attrs)
+
+        if not self.user.is_active:
+            raise serializers.ValidationError('Tu cuenta aún no ha sido verificada por correo.')
+
+        return data
+
 
 
 class EmailTokenObtainPairView(TokenObtainPairView):
