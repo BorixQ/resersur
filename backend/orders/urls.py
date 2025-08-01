@@ -1,10 +1,24 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
-from .views import WorkOrderViewSet
-
-router = DefaultRouter()
-router.register(r'', WorkOrderViewSet, basename='workorder')
+#orders/urls.py
+from django.urls import path
+from orders.views.workorder import WorkOrderListView, WorkOrderDetailView
+from orders.views.evaluations import DamageEvaluationListView, DamageEvaluationDetailView
+from orders.views.quotations import QuotationListView, QuotationDetailView
+from orders.views.history import OTStatusHistoryListView, OTStatusHistoryDetailView
+from orders.views.photos import OTPhotoListView, OTPhotoDetailView
 
 urlpatterns = [
-    path('', include(router.urls)),
+    path('workorders/', WorkOrderListView.as_view(), name='workorder-list'),
+    path('workorders/<int:pk>/', WorkOrderDetailView.as_view(), name='workorder-detail'),
+
+    path('evaluations/', DamageEvaluationListView.as_view(), name='evaluation-list'),
+    path('evaluations/<int:pk>/', DamageEvaluationDetailView.as_view(), name='evaluation-detail'),
+
+    path('quotations/', QuotationListView.as_view(), name='quotation-list'),
+    path('quotations/<int:pk>/', QuotationDetailView.as_view(), name='quotation-detail'),
+
+    path('history/', OTStatusHistoryListView.as_view(), name='history-list'),
+    path('history/<int:pk>/', OTStatusHistoryDetailView.as_view(), name='history-detail'),
+
+    path('photos/', OTPhotoListView.as_view(), name='photo-list'),
+    path('photos/<int:pk>/', OTPhotoDetailView.as_view(), name='photo-detail'),
 ]

@@ -8,5 +8,6 @@ urlpatterns = [
     path('api/accounts/', include('accounts.urls')),  # Incluye las rutas de la app accounts
     path('api/vehicles/', include('vehicles.urls')),
     path('api/orders/', include('orders.urls')),
+    path('api/tasks/', include('tasks.urls')),
 
 ]
