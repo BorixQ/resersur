@@ -5,8 +5,4 @@ class OTPhotoSerializer(serializers.ModelSerializer):
     class Meta:
         model = OTPhoto
         fields = '__all__'
-        read_only_fields = ['tecnico', 'fecha_subida']
-
-    def create(self, validated_data):
-        validated_data['tecnico'] = self.context['request'].user
-        return super().create(validated_data)
+        read_only_fields = ['fecha_subida', 'usuario']
