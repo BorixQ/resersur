@@ -5,10 +5,12 @@ from django.conf import settings
 
 class Vehicle(models.Model):
     TIPO_VEHICULO = [
-        ('auto', 'Auto'),
+        ('sedan', 'Sedan'),
+        ('suv', 'SUV'),
+        ('minivan', 'Minivan'),
         ('camioneta', 'Camioneta'),
-        ('moto', 'Moto'),
-        ('otro', 'Otro'),
+        ('furgon','Furgon'),
+        ('hatchback','Hatchback')
     ]
 
     cliente = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='vehiculos')

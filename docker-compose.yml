@@ -1,22 +1,26 @@
+version: '3.8'
+
 services:
   backend:
     build:
       context: .
       dockerfile: backend/Dockerfile
     container_name: backend-container
-    command: ["./wait-for-it.sh", "db:3306", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
+    command: ["./wait-for-it.sh", "db:3306", "--timeout=30", "--", "python", "manage.py", "runserver", "0.0.0.0:8000"]
     ports:
       - "8000:8000"
     volumes:
       - ./backend:/app
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - DEBUG=True
       - DB_HOST=db
       - DB_NAME=taller_mecanico
       - DB_USER=root
       - DB_PASSWORD=password
+    restart: unless-stopped
 
   db:
     image: mysql:8.0
@@ -24,10 +28,17 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: password
       MYSQL_DATABASE: taller_mecanico
+      MYSQL_ROOT_HOST: '%'
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-ppassword"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
 
 volumes:
   db_data:

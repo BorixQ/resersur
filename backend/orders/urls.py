@@ -1,14 +1,16 @@
 #orders/urls.py
 from django.urls import path
-from orders.views.workorder import WorkOrderListView, WorkOrderDetailView
+from orders.views.workorder import WorkOrderListCreateView, WorkOrderDetailView
+
 from orders.views.evaluations import DamageEvaluationListView, DamageEvaluationDetailView
 from orders.views.quotations import QuotationListView, QuotationDetailView
 from orders.views.history import OTStatusHistoryListView, OTStatusHistoryDetailView
 from orders.views.photos import OTPhotoListView, OTPhotoDetailView
 
 urlpatterns = [
-    path('workorders/', WorkOrderListView.as_view(), name='workorder-list'),
+    path('workorders/', WorkOrderListCreateView.as_view(), name='workorder-list'),
     path('workorders/<int:pk>/', WorkOrderDetailView.as_view(), name='workorder-detail'),
+
 
     path('evaluations/', DamageEvaluationListView.as_view(), name='evaluation-list'),
     path('evaluations/<int:pk>/', DamageEvaluationDetailView.as_view(), name='evaluation-detail'),
@@ -21,4 +23,10 @@ urlpatterns = [
 
     path('photos/', OTPhotoListView.as_view(), name='photo-list'),
     path('photos/<int:pk>/', OTPhotoDetailView.as_view(), name='photo-detail'),
+]
+
+
+urlpatterns = [
+    path('workorders/', WorkOrderListCreateView.as_view(), name='workorder-list'),
+    path('workorders/<int:pk>/', WorkOrderDetailView.as_view(), name='workorder-detail'),
 ]
