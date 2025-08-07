@@ -8,9 +8,12 @@ class OTStatusHistoryListView(generics.ListAPIView):
 
     def get_queryset(self):
         ot_id = self.request.query_params.get('ot')
+        qs = OTStatusHistory.objects.all()
         if ot_id:
-            return OTStatusHistory.objects.filter(ot_id=ot_id)
-        return OTStatusHistory.objects.all()
+            qs = qs.filter(ot_id=ot_id)
+        if self.request.user.rol == 'cliente':
+            qs = qs.filter(ot__cliente=self.request.user)
+        return qs.order_by('-fecha_cambio')
 
 class OTStatusHistoryDetailView(generics.RetrieveAPIView):
     queryset = OTStatusHistory.objects.all()

@@ -5,4 +5,4 @@ class OTStatusHistorySerializer(serializers.ModelSerializer):
     class Meta:
         model = OTStatusHistory
         fields = '__all__'
-        read_only_fields = ['timestamp']
+        read_only_fields = ['fecha_cambio']
