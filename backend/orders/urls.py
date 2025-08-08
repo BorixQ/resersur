@@ -5,7 +5,7 @@ from orders.views.evaluations import DamageEvaluationListCreateView, DamageEvalu
 from orders.views.photos import OTPhotoListCreateView, OTPhotoDetailView
 from orders.views.history import OTStatusHistoryListView, OTStatusHistoryDetailView
 
-from orders.views.quotations import QuotationListView, QuotationDetailView
+from orders.views.quotations import QuotationListCreateView, QuotationDetailView
 
 urlpatterns = [
     path('workorders/', WorkOrderListCreateView.as_view(), name='workorder-list'),
@@ -20,7 +20,7 @@ urlpatterns = [
     path('history/', OTStatusHistoryListView.as_view(), name='history-list'),
     path('history/<int:pk>/', OTStatusHistoryDetailView.as_view(), name='history-detail'),
 
-    path('quotations/', QuotationListView.as_view(), name='quotation-list'),
+    path('quotations/', QuotationListCreateView.as_view(), name='quotation-list-create'),
     path('quotations/<int:pk>/', QuotationDetailView.as_view(), name='quotation-detail'),
 
 ]
